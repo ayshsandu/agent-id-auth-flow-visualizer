@@ -29,6 +29,15 @@ const App: React.FC = () => {
         </div>
       </header>
 
+      {/* Project Description */}
+      <div className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <p className="text-lg text-slate-600 leading-relaxed">
+            This interactive visualization demonstrates how identity tokens flow through an educational technology ecosystem, showcasing direct user access, AI agent interactions, and On-Behalf-Of (OBO) authorization patterns in a AI enabled learning management system with WSO2's Agent ID.
+          </p>
+        </div>
+      </div>
+
       {/* Main Content */}
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         
