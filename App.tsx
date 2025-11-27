@@ -95,7 +95,7 @@ const App: React.FC = () => {
             }`}>
               {activeFlow === FlowType.DIRECT && (
                 <>
-                    In <strong>Direct Mode</strong>, the Student logs into the <strong>LMS Portal (SPA)</strong>.
+                    In <strong>Direct Mode</strong>, the Student logs into the <strong>LMS Portal</strong>.
                     The portal obtains a <strong>User Token</strong> which is passed directly to the 
                     <strong> MCP 1 (Research Server)</strong> and 
                     <strong> MCP 2 (Student Workspace Server)</strong>.

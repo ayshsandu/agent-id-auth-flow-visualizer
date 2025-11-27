@@ -305,8 +305,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {/* SPA (LMS Platform) - Center */}
         <g transform="translate(260, 260)">
           <rect x="-70" y="-80" width="140" height="160" rx="4" fill="#fdf4f0" stroke="#94a3b8" strokeWidth="1" />
-          <text x="0" y="-60" textAnchor="middle" className="text-sm font-semibold fill-slate-700">LMS Platform</text>
-          <text x="0" y="-45" textAnchor="middle" className="text-xs fill-slate-500">(Canvas)</text>
+          <text x="0" y="-60" textAnchor="middle" className="text-sm font-semibold fill-slate-700">LMS Portal</text>
+          <text x="0" y="-45" textAnchor="middle" className="text-xs fill-slate-500">(WebUI - SPA)</text>
 
           {/* Internal Client Node */}
           <rect x="-60" y="40" width="120" height="30" rx="4" fill="white" stroke={colors.linkDirect} strokeWidth="2" />
