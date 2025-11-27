@@ -11,12 +11,12 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Tooltip state
-  const [tooltip, setTooltip] = useState<{ 
-    visible: boolean; 
-    x: number; 
-    y: number; 
-    content: string; 
-    title: string; 
+  const [tooltip, setTooltip] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    content: string;
+    title: string;
     align: 'left' | 'right';
     pinned: boolean;
   } | null>(null);
@@ -32,53 +32,53 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
   const tokenClaims = {
     user: {
       "sub": "082b2c00-2d86-460f-9f6d-775bddc1d4ba",
-      "aut": "STUDENT",
+      "aut": "APPLICATION_USER",
       "binding_type": "cookie",
-      "iss": "https://auth.university.edu/oauth2/token",
+      "iss": "https://localhost:9443/oauth2/token",
       "client_id": "Kp3gcfZCdOVmMqas5VnKjZtKYjoa",
-      "aud": "university-research-mcp",
+      "aud": "Kp3gcfZCdOVmMqas5VnKjZtKYjoa",
       "nbf": 1764180297,
       "azp": "Kp3gcfZCdOVmMqas5VnKjZtKYjoa",
       "org_id": "10084a8d-113f-4211-a0d5-efe36b082211",
-      "scope": "email openid profile grades.read",
+      "scope": "email openid profile query_agent",
       "exp": 1764183897,
-      "org_name": "State Univ",
+      "org_name": "Super",
       "iat": 1764180297,
       "binding_ref": "57523a707ab607a8e246316e2951e823",
       "jti": "620d1ee7-2540-407c-800f-acf249d21561",
-      "org_handle": "state.edu"
+      "org_handle": "carbon.super"
     },
     obo: {
       "sub": "082b2c00-2d86-460f-9f6d-775bddc1d4ba",
-      "aut": "STUDENT",
-      "iss": "https://auth.university.edu/oauth2/token",
+      "aut": "APPLICATION_USER",
+      "iss": "https://localhost:9443/oauth2/token",
       "client_id": "7KafXIoqkfzS6TugWBBtby9A7FYa",
-      "aud": "student-workspace-mcp",
+      "aud": "7KafXIoqkfzS6TugWBBtby9A7FYa",
       "nbf": 1764180730,
       "act": { "sub": "fb0dba08-1621-49f6-82e4-d81094c5de54" },
       "azp": "7KafXIoqkfzS6TugWBBtby9A7FYa",
       "org_id": "10084a8d-113f-4211-a0d5-efe36b082211",
       "exp": 1764184330,
-      "org_name": "State Univ",
+      "org_name": "Super",
       "iat": 1764180730,
       "jti": "06b4c534-c78a-4216-9279-52251a3c0a1f",
-      "org_handle": "state.edu"
+      "org_handle": "carbon.super"
     },
     agent: {
       "sub": "fb0dba08-1621-49f6-82e4-d81094c5de54",
-      "aut": "AI_TUTOR",
-      "iss": "https://auth.university.edu/oauth2/token",
+      "aut": "AGENT",
+      "iss": "https://localhost:9443/oauth2/token",
       "client_id": "7KafXIoqkfzS6TugWBBtby9A7FYa",
-      "aud": "university-research-mcp",
+      "aud": "7KafXIoqkfzS6TugWBBtby9A7FYa",
       "nbf": 1764180914,
       "azp": "7KafXIoqkfzS6TugWBBtby9A7FYa",
       "org_id": "10084a8d-113f-4211-a0d5-efe36b082211",
-      "scope": "openid library.read",
+      "scope": "openid",
       "exp": 1764184514,
-      "org_name": "State Univ",
+      "org_name": "Super",
       "iat": 1764180914,
       "jti": "5996c775-d66c-4921-9540-412f460915f6",
-      "org_handle": "state.edu"
+      "org_handle": "carbon.super"
     }
   };
 
@@ -90,9 +90,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
     const relativeTop = rect.top - containerRect.top;
     const isRightSide = relativeLeft > containerRect.width / 2;
     return {
-        x: isRightSide ? relativeLeft : relativeLeft + rect.width,
-        y: relativeTop,
-        align: isRightSide ? 'right' as const : 'left' as const
+      x: isRightSide ? relativeLeft : relativeLeft + rect.width,
+      y: relativeTop,
+      align: isRightSide ? 'right' as const : 'left' as const
     };
   };
 
@@ -119,18 +119,18 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
   const handleTokenClick = (e: React.MouseEvent, type: 'user' | 'agent' | 'obo') => {
     e.stopPropagation();
     const title = type === 'user' ? 'User Token' : type === 'agent' ? 'Agent Token' : 'OBO Token';
-    
+
     // If clicking the same pinned token, toggle it off
     if (tooltip?.pinned && tooltip.title === title) {
-        setTooltip(null);
-        return;
+      setTooltip(null);
+      return;
     }
 
     const { x, y, align } = getTooltipPosition(e.currentTarget);
     setTooltip({
       visible: true,
-      x, 
-      y, 
+      x,
+      y,
       align,
       content: JSON.stringify(tokenClaims[type], null, 2),
       title: title,
@@ -166,7 +166,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
   const isOBO = activeFlow === FlowType.OBO;
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="w-full h-full min-h-[500px] flex items-center justify-center bg-white rounded-xl shadow-sm border border-slate-200 p-4 relative cursor-default"
       onClick={handleBackgroundClick}
@@ -206,7 +206,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
 
       {/* Tooltip Overlay */}
       {tooltip && (
-        <div 
+        <div
           className={`absolute z-50 ${tooltip.pinned ? 'pointer-events-auto' : 'pointer-events-none'}`}
           style={{
             top: tooltip.y,
@@ -219,15 +219,15 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
             <div className="font-bold border-b border-slate-600 pb-1 mb-2 text-amber-400 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 {tooltip.pinned && (
-                   <span className="text-slate-400">
-                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-                   </span>
+                  <span className="text-slate-400">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+                  </span>
                 )}
                 <span>{tooltip.title}</span>
               </div>
-              
+
               {tooltip.pinned ? (
-                <button 
+                <button
                   onClick={() => setTooltip(null)}
                   className="text-slate-400 hover:text-white transition-colors bg-slate-700 hover:bg-slate-600 rounded p-0.5"
                   title="Close"
@@ -273,7 +273,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
           <marker id="arrowhead-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
           </marker>
-           <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#246f2cff" />
           </marker>
         </defs>
@@ -422,9 +422,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               <text y="3" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">T</text>
             </circle>
             {/* OBO Token Label */}
-            <g 
-              onMouseEnter={(e) => handleMouseEnter(e, 'obo')} 
-              onMouseLeave={handleMouseLeave} 
+            <g
+              onMouseEnter={(e) => handleMouseEnter(e, 'obo')}
+              onMouseLeave={handleMouseLeave}
               onClick={(e) => handleTokenClick(e, 'obo')}
               className="token-hover-group"
             >
@@ -460,8 +460,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
             </circle>
             {/* Agent Token Label (Renamed from OBO) */}
             <g
-              onMouseEnter={(e) => handleMouseEnter(e, 'agent')} 
-              onMouseLeave={handleMouseLeave} 
+              onMouseEnter={(e) => handleMouseEnter(e, 'agent')}
+              onMouseLeave={handleMouseLeave}
               onClick={(e) => handleTokenClick(e, 'agent')}
               className="token-hover-group"
             >
@@ -552,8 +552,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {/* Token Labels with Tooltips */}
         {!isOBO && (
           <g
-            onMouseEnter={(e) => handleMouseEnter(e, 'user')} 
-            onMouseLeave={handleMouseLeave} 
+            onMouseEnter={(e) => handleMouseEnter(e, 'user')}
+            onMouseLeave={handleMouseLeave}
             onClick={(e) => handleTokenClick(e, 'user')}
             className="token-hover-group"
           >
@@ -564,8 +564,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
 
         {isDirect && (
           <g
-            onMouseEnter={(e) => handleMouseEnter(e, 'user')} 
-            onMouseLeave={handleMouseLeave} 
+            onMouseEnter={(e) => handleMouseEnter(e, 'user')}
+            onMouseLeave={handleMouseLeave}
             onClick={(e) => handleTokenClick(e, 'user')}
             className="token-hover-group"
           >
@@ -577,8 +577,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {isAgent && (
           <>
             <g
-              onMouseEnter={(e) => handleMouseEnter(e, 'user')} 
-              onMouseLeave={handleMouseLeave} 
+              onMouseEnter={(e) => handleMouseEnter(e, 'user')}
+              onMouseLeave={handleMouseLeave}
               onClick={(e) => handleTokenClick(e, 'user')}
               className="token-hover-group"
             >
@@ -586,8 +586,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               <text x="420" y="164" textAnchor="middle" className="text-[10px] fill-white font-bold pointer-events-none">User Token</text>
             </g>
             <g
-              onMouseEnter={(e) => handleMouseEnter(e, 'agent')} 
-              onMouseLeave={handleMouseLeave} 
+              onMouseEnter={(e) => handleMouseEnter(e, 'agent')}
+              onMouseLeave={handleMouseLeave}
               onClick={(e) => handleTokenClick(e, 'agent')}
               className="token-hover-group"
             >
@@ -599,8 +599,8 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
 
         {isOBO && (
           <g
-            onMouseEnter={(e) => handleMouseEnter(e, 'obo')} 
-            onMouseLeave={handleMouseLeave} 
+            onMouseEnter={(e) => handleMouseEnter(e, 'obo')}
+            onMouseLeave={handleMouseLeave}
             onClick={(e) => handleTokenClick(e, 'obo')}
             className="token-hover-group"
           >
