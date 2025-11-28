@@ -283,7 +283,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {/* Identity Server (WSO2 IAM) - Top Center */}
         <g transform="translate(260, 60)">
           {/* Auth Connection Lines (Behind nodes) */}
-          <path d="M0 40 L0 120" stroke={colors.linkAuth} strokeWidth="2" strokeDasharray="4 4" className={isOBO ? "" : "flow-anim"} opacity={isOBO ? 0.3 : 1} />
+          <path d="M0 40 L0 120" stroke={colors.linkAuth} strokeWidth="2" strokeDasharray="4 4" className={!isDirect ? "" : "flow-anim"} opacity={!isDirect ? 0.3 : 1} />
 
           <rect x="-70" y="-30" width="150" height="70" rx="4" fill={colors.auth} stroke={colors.linkAuth} strokeWidth="2" />
           <text x="0" y="-5" textAnchor="middle" className="text-xs font-bold fill-amber-800">WSO2 IAM</text>
@@ -310,7 +310,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
 
           {/* Internal Client Node */}
           <rect x="-60" y="40" width="120" height="30" rx="4" fill="white" stroke={colors.linkDirect} strokeWidth="2" />
-          <text x="0" y="60" textAnchor="middle" className="text-xs fill-slate-700 font-mono">MCP Client</text>
+          <text x="0" y="60" textAnchor="middle" className="text-xs fill-slate-700 font-mono">Client</text>
         </g>
 
         {/* Agent (Smart Agent) - Right Top */}
@@ -356,16 +356,17 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         <path
           d="M 60 230 Q 60 60 190 60"
           stroke={colors.linkAuth}
-          strokeWidth="2"
+          strokeWidth="1"
           fill="none"
           strokeDasharray="4 4"
-          className="flow-anim"
+          className={!isAgent ? "flow-anim" : ""}
           markerEnd="url(#arrowhead-amber)"
+          opacity={isAgent ? 0.3 : 1}
         />
         <text x="110" y="120" textAnchor="middle" className="text-[9px] fill-amber-600 font-bold bg-white rounded">Authenticate/Authorize</text>
 
-        {/* SPA -> Auth Server (Request) - Normal OAuth Flow */}
-        {!isOBO && (
+        {/* SPA -> Auth Server (Request) - Direct Flow Only */}
+        {isDirect && (
           <g transform="translate(260, 80)">
             <g className="token-drop-anim">
               <circle r="8" fill={colors.tokenAuth} />
@@ -377,6 +378,17 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {/* --- OBO FLOW VISUALS --- */}
         {isOBO && (
           <>
+            {/* Agent Authenticate with Auth Server */}
+            <path
+              d="M500 120 C 460 100, 420 70, 340 70"
+              fill="none"
+              stroke={colors.linkAuth}
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              markerEnd="url(#arrowhead-amber)"
+            />
+            {/* <text x="420" y="95" textAnchor="middle" className="text-[9px] fill-amber-600 font-bold bg-white rounded">Agent Authenticate</text> */}
+
             {/* 1. Return Link: Agent -> SPA */}
             <path
               d="M 510 140 L 330 200"
@@ -438,9 +450,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {/* Agent -> Auth (Only if Agent Mode - steady state) */}
         {isAgent && (
           <>
-            {/* Connection Line Agent <-> Auth */}
+            {/* Connection Line Agent <-> Auth - Token Delivery (above) */}
             <path
-              d="M340 60 C 420 60, 460 140, 500 140"
+              d="M340 50 C 420 50, 460 90, 510 90"
               fill="none"
               stroke={colors.linkAuth}
               strokeWidth="1.5"
@@ -451,23 +463,35 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               <animateMotion
                 dur="2s"
                 repeatCount="indefinite"
-                path="M340 60 C 420 60, 460 140, 500 140"
+                path="M340 50 C 420 50, 460 90, 510 90"
                 keyPoints="0;1"
                 keyTimes="0;1"
                 calcMode="linear"
               />
               <text y="3" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">A</text>
             </circle>
-            {/* Agent Token Label (Renamed from OBO) */}
+            {/* Agent Token Label */}
             <g
               onMouseEnter={(e) => handleMouseEnter(e, 'agent')}
               onMouseLeave={handleMouseLeave}
               onClick={(e) => handleTokenClick(e, 'agent')}
               className="token-hover-group"
             >
-              <rect x="380" y="70" width="65" height="14" rx="2" fill={colors.tokenAgent} fillOpacity="0.9" />
-              <text x="412" y="80" textAnchor="middle" className="text-[8px] fill-white font-bold pointer-events-none">Agent Token</text>
+              <rect x="380" y="55" width="65" height="14" rx="2" fill={colors.tokenAgent} fillOpacity="0.9" />
+              <text x="412" y="65" textAnchor="middle" className="text-[8px] fill-white font-bold pointer-events-none">Agent Token</text>
             </g>
+
+            {/* Agent Authenticate with Auth Server (below) */}
+            <path
+              d="M510 130 C 460 110, 420 80, 340 80"
+              fill="none"
+              stroke={colors.linkAuth}
+              strokeWidth="2"
+              strokeDasharray="4 4"
+              className="flow-anim"
+              markerEnd="url(#arrowhead-amber)"
+            />
+            <text x="420" y="105" textAnchor="middle" className="text-[9px] fill-amber-600 font-bold bg-white rounded">Agent Authenticate</text>
           </>
         )}
 
@@ -550,7 +574,7 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         {/* --- CONTEXT LABELS --- */}
 
         {/* Token Labels with Tooltips */}
-        {!isOBO && (
+        {isDirect && (
           <g
             onMouseEnter={(e) => handleMouseEnter(e, 'user')}
             onMouseLeave={handleMouseLeave}
