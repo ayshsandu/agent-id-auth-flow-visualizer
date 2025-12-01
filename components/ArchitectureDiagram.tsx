@@ -284,6 +284,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
         <g transform="translate(260, 60)">
           {/* Auth Connection Lines (Behind nodes) */}
           <path d="M0 40 L0 120" stroke={colors.linkAuth} strokeWidth="2" strokeDasharray="4 4" className={!isDirect ? "" : "flow-anim"} opacity={!isDirect ? 0.3 : 1} />
+          {/* Step 2 - Auth to SPA (User Token) */}
+          <circle cx="10" cy="50" r="10" fill="#334155" opacity={!isDirect ? 0.3 : 1} />
+          <text x="10" y="55" textAnchor="middle" className="text-xs font-bold fill-white" opacity={!isDirect ? 0.3 : 1}>2</text>
 
           <rect x="-70" y="-30" width="150" height="70" rx="4" fill={colors.auth} stroke={colors.linkAuth} strokeWidth="2" />
           <text x="0" y="-5" textAnchor="middle" className="text-xs font-bold fill-amber-800">WSO2 IAM</text>
@@ -364,6 +367,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
           opacity={isAgent ? 0.3 : 1}
         />
         <text x="110" y="120" textAnchor="middle" className="text-[9px] fill-amber-600 font-bold bg-white rounded">Authenticate/Authorize</text>
+        {/* Step 1 - User to Auth */}
+        <circle cx="75" cy="185" r="10" fill="#334155" opacity={isOBO || isAgent ? 0.3 : 1} />
+        <text x="75" y="190" textAnchor="middle" className="text-xs font-bold fill-white" opacity={isOBO || isAgent ? 0.3 : 1}>1</text>
 
         {/* SPA -> Auth Server (Request) - Direct Flow Only */}
         {isDirect && (
@@ -387,11 +393,13 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               strokeDasharray="4 4"
               markerEnd="url(#arrowhead-amber)"
             />
-            {/* <text x="420" y="95" textAnchor="middle" className="text-[9px] fill-amber-600 font-bold bg-white rounded">Agent Authenticate</text> */}
+            {/* Step 7.a - Agent to Auth (OBO Flow) */}
+            <circle cx="480" cy="115" r="10" fill="#334155" />
+            <text x="480" y="120" textAnchor="middle" className="text-[10px] font-bold fill-white">7.a</text>
 
             {/* 1. Return Link: Agent -> SPA */}
             <path
-              d="M 510 140 L 330 200"
+              d="M 510 145 L 330 205"
               stroke={colors.linkOBO}
               strokeWidth="2"
               fill="none"
@@ -399,9 +407,13 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               className="flow-anim"
               markerEnd="url(#arrowhead-pink)"
             />
+            {/* Step 4 - Agent to SPA (Authz Request) */}
+            <circle cx="495" cy="150" r="10" fill="#334155" />
+            <text x="495" y="155" textAnchor="middle" className="text-xs font-bold fill-white">4</text>
+
             {/* 2. Return Link: SPA -> User */}
             <path
-              d="M 190 265 L 90 265"
+              d="M 190 270 L 90 270"
               stroke={colors.linkOBO}
               strokeWidth="2"
               fill="none"
@@ -410,6 +422,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               markerEnd="url(#arrowhead-pink)"
             />
             <text x="140" y="278" textAnchor="middle" className="text-[9px] fill-pink-600 font-bold bg-white p-1">Authz Request</text>
+            {/* Step 5 - SPA to User (Authz Request) */}
+            <circle cx="175" cy="262" r="10" fill="#334155" />
+            <text x="175" y="267" textAnchor="middle" className="text-xs font-bold fill-white">5</text>
 
             {/* 4. Auth Server -> Agent (Token Delivery) */}
             <path
@@ -421,6 +436,10 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               className="flow-anim"
               markerEnd="url(#arrowhead-amber)"
             />
+            {/* Step 7.b - Auth to Agent */}
+            <circle cx="350" cy="55" r="10" fill="#334155" />
+            <text x="350" y="60" textAnchor="middle" className="text-[10px] font-bold fill-white">7.b</text>
+
             {/* OBO Token Animation - Auth to Agent */}
             <circle r="6" fill={colors.tokenOBO}>
               <animateMotion
@@ -458,6 +477,10 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               strokeWidth="1.5"
               strokeDasharray="4 4"
             />
+            {/* Step 4.a - Agent to Auth */}
+            <circle cx="495" cy="125" r="10" fill="#334155" />
+            <text x="495" y="130" textAnchor="middle" className="text-[9px] font-bold fill-white">4a</text>
+
             {/* Token moving from Auth to Agent */}
             <circle r="6" fill={colors.tokenAgent}>
               <animateMotion
@@ -492,6 +515,9 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
               markerEnd="url(#arrowhead-amber)"
             />
             <text x="420" y="105" textAnchor="middle" className="text-[9px] fill-amber-600 font-bold bg-white rounded">Agent Authenticate</text>
+            {/* Step 4.b - Auth to Agent Token */}
+            <circle cx="350" cy="55" r="10" fill="#334155" />
+            <text x="350" y="60" textAnchor="middle" className="text-[9px] font-bold fill-white">4b</text>
           </>
         )}
 
@@ -515,17 +541,31 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
           className={isDirect ? "flow-anim" : ""}
           markerEnd={isDirect ? "url(#arrowhead-blue)" : ""}
         />
+        {/* Step 3 - SPA to MCP (Direct Flow) */}
+        {isDirect && (
+          <>
+            <circle cx="340" cy="310" r="10" fill="#334155" />
+            <text x="340" y="315" textAnchor="middle" className="text-xs font-bold fill-white">3</text>
+          </>
+        )}
 
         {/* SPA -> Agent (Flow 2: Agent) */}
         <path
-          d="M330 200 L510 140"
-          stroke={isAgent ? colors.linkDirect : '#e2e8f0'}
-          strokeWidth={isAgent ? 3 : 1}
+          d="M330 195 L510 135"
+          stroke={isAgent || isOBO ? colors.linkDirect : '#e2e8f0'}
+          strokeWidth={isAgent || isOBO ? 3 : 1}
           fill="none"
-          strokeDasharray={isAgent ? "10,5" : "0"}
-          className={isAgent ? "flow-anim" : ""}
-          markerEnd={isAgent ? "url(#arrowhead-blue)" : ""}
+          strokeDasharray={isAgent || isOBO ? "10,5" : "0"}
+          className={isAgent || isOBO ? "flow-anim" : ""}
+          markerEnd={isAgent || isOBO ? "url(#arrowhead-blue)" : ""}
         />
+        {/* Step 3 - SPA to Agent (Agent/OBO Flow) */}
+        {(isAgent || isOBO) && (
+          <>
+            <circle cx="350" cy="180" r="10" fill="#334155" opacity={isOBO ? 0.3 : 1} />
+            <text x="350" y="185" textAnchor="middle" className="text-xs font-bold fill-white" opacity={isOBO ? 0.3 : 1}>3</text>
+          </>
+        )}
 
         {/* Agent -> MCP Servers (Flow 2: Agent & Flow 3: OBO) */}
         <path
@@ -546,6 +586,23 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
           className={(isAgent || isOBO) ? "flow-anim" : ""}
           markerEnd={(isAgent || isOBO) ? "url(#arrowhead-violet)" : ""}
         />
+        {/* Step 5 (Agent Flow) / Step 9 (OBO Flow) - Agent to MCP */}
+        {isAgent && (
+          <>
+            <circle cx="665" cy="155" r="10" fill="#334155" />
+            <text x="665" y="160" textAnchor="middle" className="text-xs font-bold fill-white">5</text>
+          </>
+        )}
+        {isOBO && (
+          <>
+            <circle cx="665" cy="155" r="10" fill="#334155" />
+            <text x="665" y="160" textAnchor="middle" className="text-xs font-bold fill-white">8</text>
+
+            {/* Step 6 - User to Auth (OBO Flow) */}
+            <circle cx="60" cy="140" r="10" fill="#334155" />
+            <text x="60" y="145" textAnchor="middle" className="text-xs font-bold fill-white">6</text>
+          </>
+        )}
 
         {/* Token Animation for Agent -> MCP (Active in Agent or OBO) */}
         {(isAgent || isOBO) && (
@@ -598,27 +655,28 @@ const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ activeFlow })
           </g>
         )}
 
+        {(isAgent || isOBO) && (
+          <g
+            onMouseEnter={(e) => handleMouseEnter(e, 'user')}
+            onMouseLeave={handleMouseLeave}
+            onClick={(e) => handleTokenClick(e, 'user')}
+            className="token-hover-group"
+          >
+            <rect x="380" y="150" width="80" height="20" rx="4" fill={colors.tokenUser} />
+            <text x="420" y="164" textAnchor="middle" className="text-[10px] fill-white font-bold pointer-events-none">User Token</text>
+          </g>
+        )}
+
         {isAgent && (
-          <>
-            <g
-              onMouseEnter={(e) => handleMouseEnter(e, 'user')}
-              onMouseLeave={handleMouseLeave}
-              onClick={(e) => handleTokenClick(e, 'user')}
-              className="token-hover-group"
-            >
-              <rect x="380" y="150" width="80" height="20" rx="4" fill={colors.tokenUser} />
-              <text x="420" y="164" textAnchor="middle" className="text-[10px] fill-white font-bold pointer-events-none">User Token</text>
-            </g>
-            <g
-              onMouseEnter={(e) => handleMouseEnter(e, 'agent')}
-              onMouseLeave={handleMouseLeave}
-              onClick={(e) => handleTokenClick(e, 'agent')}
-              className="token-hover-group"
-            >
-              <rect x="660" y="120" width="80" height="20" rx="4" fill={colors.tokenAgent} />
-              <text x="700" y="134" textAnchor="middle" className="text-[10px] fill-white font-bold pointer-events-none">Agent Token</text>
-            </g>
-          </>
+          <g
+            onMouseEnter={(e) => handleMouseEnter(e, 'agent')}
+            onMouseLeave={handleMouseLeave}
+            onClick={(e) => handleTokenClick(e, 'agent')}
+            className="token-hover-group"
+          >
+            <rect x="660" y="120" width="80" height="20" rx="4" fill={colors.tokenAgent} />
+            <text x="700" y="134" textAnchor="middle" className="text-[10px] fill-white font-bold pointer-events-none">Agent Token</text>
+          </g>
         )}
 
         {isOBO && (
